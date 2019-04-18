@@ -59,4 +59,42 @@ router.post('/video', (req, res) => {
   });
 });
 
+router.put('/video/:id', (req, res) => {
+  console.log('Update request for new video');
+  Video.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: {
+        title: req.body.title,
+        url: req.body.url,
+        description: req.body.description
+      }
+    },
+    {
+      new: true
+    },
+    (err, updateVideo) => {
+      if (err) {
+        res.send('Error update video');
+      } else {
+        res.json(updateVideo);
+      }
+    }
+  )
+});
+
+router.delete('/video/:id', (req, res) => {
+  console.log('Delete request for new video');
+  Video.findByIdAndRemove(
+    req.params.id,
+    (err, deleteVideo) => {
+      if (err) {
+        res.send('Error update video');
+      } else {
+        res.json(deleteVideo);
+      }
+    }
+  );
+});
+
 module.exports = router;
