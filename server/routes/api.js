@@ -2,20 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Video = require('./../models/video');
 
-// var mongoClient = require('mongodb').MongoClient;
-// mongoClient.connect(
-//     db,
-//     { useNewUrlParser: true },
-//     (err, db) => {
-//       //neu ket noi khong thanh cong thi in ra loi
-//       if (err) throw err;
-//       //neu thanh cong thi log ra thong bao
-//       console.log('Ket noi thanh cong');
-//       // db.close();
-//       console.log('close thanh cong');
-//     }
-// );
-
 const mongoose = require('mongoose');
 const db = 'mongodb://127.0.0.1:27017/task';
 
@@ -42,9 +28,35 @@ router.get('/videos', (req, res) => {
       console.log('Error retriving videos');
     } else {
       res.json(videos);
-      // res.send('api video')
     }
   })
+});
+
+router.get('/videos/:id', (req, res) => {
+  console.log('Get request for the single video');
+  Video.findById(req.params.id)
+  .exec( (err, videos) => {
+    if (err) {
+      console.log('Error retriving video');
+    } else {
+      res.json(videos);
+    }
+  })
+});
+
+router.post('/video', (req, res) => {
+  console.log('Post request for new video');
+  var newVideo = new Video();
+  newVideo.title = req.body.title;
+  newVideo.url = req.body.url;
+  newVideo.description = req.body.description;
+  newVideo.save( (err, insertVideo ) => {
+    if (err) {
+      console.log('Error create video');
+    } else {
+      res.json(insertVideo);
+    }
+  });
 });
 
 module.exports = router;
