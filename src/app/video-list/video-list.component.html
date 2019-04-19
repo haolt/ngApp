@@ -1,0 +1,6 @@
+<div *ngFor="let video of videos">
+  <div (click)="onSelectVideo(video)">
+      <h5>{{ video.title }}</h5>
+      <small>{{ video.description }}</small>
+  </div>
+</div>
